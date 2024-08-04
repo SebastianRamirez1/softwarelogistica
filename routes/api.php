@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\UbicacionController;
+use App\Http\Controllers\InformeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::apiResource('v1/productos', App\Http\Controllers\Api\V1\ProductoController::class);
+Route::apiResource('inventarios', InventarioController::class);
+Route::apiResource('pedidos', PedidoController::class);
+Route::apiResource('ubicaciones', UbicacionController::class);
+Route::apiResource('informes', InformeController::class);
