@@ -19,7 +19,8 @@ use App\Http\Controllers\InformeController;
 */
 
 
-Route::apiResource('v1/productos', App\Http\Controllers\Api\V1\ProductoController::class);
+
+Route::apiResource('productos', ProductoController::class);
 Route::apiResource('inventarios', InventarioController::class);
 Route::apiResource('pedidos', PedidoController::class);
 Route::apiResource('ubicaciones', UbicacionController::class);

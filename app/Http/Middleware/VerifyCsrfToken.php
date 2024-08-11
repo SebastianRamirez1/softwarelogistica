@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        'api/inventario/*', // Añade la ruta a la que estás enviando la solicitud POST
     ];
 }
+

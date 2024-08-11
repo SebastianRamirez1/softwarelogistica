@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('producto_id')->constrained('productos');
             $table->integer('cantidad');
-            $table->string('tipo_movimiento'); // Entrada o Salida
+            $table->string('tipo_movimiento')->default('default_value');; // Entrada o Salida
             $table->timestamps();
         });
     }
