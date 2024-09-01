@@ -34,8 +34,17 @@
                             <h2 class="text-xl font-bold">Pedido #${pedido.id}</h2>
                             <p>Producto: ${pedido.producto_id}</p>
                             <p>Cantidad: ${pedido.cantidad}</p>
-                            <p>Cantidad: ${pedido.estado}</p>
+                            <p>Estado: ${pedido.estado}</p>
                             <button onclick="eliminarPedido(${pedido.id})" class="bg-red-500 text-white p-2 rounded mt-2">Eliminar</button>
+                            <button onclick="mostrarFormularioActualizar(${pedido.id})" class="bg-green-500 text-white p-2 rounded mt-2">Actualizar</button>
+
+                            <!-- Formulario para actualizar pedido -->
+                            <div id="formularioActualizar_${pedido.id}" class="hidden mt-4">
+                                <input type="text" id="producto_id_${pedido.id}" value="${pedido.producto_id}" placeholder="ID del producto" class="border p-2 rounded">
+                                <input type="number" id="cantidad_${pedido.id}" value="${pedido.cantidad}" placeholder="Cantidad" class="border p-2 rounded">
+                                <input type="text" id="estado_${pedido.id}" value="${pedido.estado}" placeholder="Estado" class="border p-2 rounded">
+                                <button onclick="actualizarPedido(${pedido.id})" class="bg-blue-500 text-white p-2 rounded mt-2">Guardar Cambios</button>
+                            </div>
                         `;
                         pedidosList.appendChild(pedidoElement);
                     });
@@ -99,6 +108,55 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             }).then(() => cargarPedidos());
+        };
+
+        // Mostrar formulario de actualización
+        window.mostrarFormularioActualizar = function (id) {
+            const formulario = document.getElementById(`formularioActualizar_${id}`);
+            formulario.classList.toggle('hidden');
+        };
+
+        // Actualizar pedido
+        window.actualizarPedido = function (id) {
+            // Obtener los valores de los inputs
+            const cantidad = document.getElementById(`cantidad_${id}`).value;
+            const estado = document.getElementById(`estado_${id}`).value;
+            const producto_id = document.getElementById(`producto_id_${id}`).value;
+
+            // Validar los valores para asegurarse de que son válidos
+            if (producto_id && cantidad && estado) {
+                // Crear el objeto que se enviará como JSON
+                const data = {
+                    producto_id: parseInt(producto_id, 10),
+                    cantidad: parseInt(cantidad, 10),
+                    estado: estado.trim()
+                };
+
+                // Enviar la solicitud con el fetch
+                fetch(`/api/pedidos/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la respuesta de la red');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    cargarPedidos();
+                    console.log('Respuesta recibida:', data);
+                })
+                .catch(error => {
+                    console.error('Hubo un problema con la solicitud fetch:', error);
+                });
+            } else {
+                console.error('Faltan datos para enviar el formulario de actualización.');
+            }
         };
     });
 </script>
