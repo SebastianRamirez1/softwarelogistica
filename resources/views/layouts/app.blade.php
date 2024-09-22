@@ -9,6 +9,8 @@
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
 
+    @include('layouts.navigation')
+
     @include('layouts.header')
 
     <div class="container mx-auto mt-4">
@@ -25,5 +27,6 @@
     @include('layouts.footer')
 
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
 </body>
 </html>
